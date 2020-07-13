@@ -1,14 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:height_slider/height_slider.dart';
-
-void main(List<String> args) {
-  runApp(MaterialApp(
-    title: "magnata",
-    home: Home(),
-  ));
-}
 
 class Home extends StatefulWidget {
   @override
@@ -20,17 +11,12 @@ class _HomeState extends State<Home> {
   int height = 160;
 
   int sexo = 1;
-  double altura;
   double _peso = 60;
-  double _imc;
 
-  void _alerta(BuildContext context) {
+  /*void _alerta(BuildContext context) {
     var alertaResultado = AlertDialog(
-      title: Text("Seu IMC é ${_imc.toStringAsPrecision(3)} "),
-      content: Text(
-        "$_infoText ",
-        style: TextStyle(fontSize: 22),
-      ),
+      title: Text("Seu IMC é "),
+      content: Text("$_infoText "),
       actions: <Widget>[
         FlatButton(
             onPressed: () {
@@ -40,7 +26,7 @@ class _HomeState extends State<Home> {
       ],
     );
     showDialog(context: context, builder: (context) => alertaResultado);
-  }
+  }*/
 
   void _somar() {
     setState(() {
@@ -68,24 +54,32 @@ class _HomeState extends State<Home> {
     });
   }
 
+  void _resetField() {
+    setState(() {
+      _infoText = "Informe seus dados";
+    });
+  }
+
   void _calculate() {
     setState(() {
-      _imc = _peso /
-          ((height * height / 10000)); //CONVERTENDO DE METROS PARA CENTRIMETROS
+      double _imc = _peso / (height * height);
       if (_imc < 18.6) {
-        _infoText = "Você está abaixo do peso ";
+        _infoText = "você está abaixo do peso (${_imc.toStringAsPrecision(3)})";
       } else if (_imc >= 18.7 && _imc <= 24.9) {
-        _infoText = "Você está no peso ideal ";
+        _infoText = "você está no peso ideal (${_imc.toStringAsPrecision(3)})";
       } else if (_imc >= 25.0 && _imc <= 29.9) {
-        _infoText = "Você está com sobrepeso ";
+        _infoText = "você está com sobrepeso (${_imc.toStringAsPrecision(3)})";
       } else if (_imc >= 30.0 && _imc <= 34.9) {
-        _infoText = "Você está com obesidade grau 1 ";
+        _infoText =
+            "você está com obesidade grau 1 (${_imc.toStringAsPrecision(3)})";
       } else if (_imc >= 35.0 && _imc <= 39.9) {
-        _infoText = "Você está com obesidade no grau 2 ";
+        _infoText =
+            "você está com obesidade no grau 2 (${_imc.toStringAsPrecision(3)})";
       } else {
-        _infoText = "Você está com obesidade no grau 3 ";
+        _infoText =
+            "você está com obesidade no grau 3 (${_imc.toStringAsPrecision(3)})";
       }
-      _alerta(context);
+      // _alerta(context);
     });
   }
 
@@ -99,6 +93,9 @@ class _HomeState extends State<Home> {
             "Calculdora de IMC",
             style: TextStyle(fontSize: 25),
           ),
+          actions: <Widget>[
+//IconButton(icon: Icon(Icons.refresh), onPressed: _resetField)
+          ],
         ),
         backgroundColor: Color.fromRGBO(12, 18, 52, 30),
         body: SingleChildScrollView(
@@ -304,6 +301,11 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                   ],
+                ),
+                Text(
+                  _infoText,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 25),
                 ),
               ],
             ),
